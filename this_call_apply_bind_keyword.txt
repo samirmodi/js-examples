@@ -1,0 +1,71 @@
+Before we step into the main issue, it is better to talk a bit on “this” keyword.
+“This” keyword refers to the context and it depends on where it is operated.
+
+//https://javascript.plainenglish.io/mastering-call-apply-bind-in-js-94b9d91b3f0e
+
+When “this” is used alone or in a function, it automatically refers to the global object, the owner of the function. 
+But when the mode is “strict”, it is undefined.
+
+console.log(this);
+// logs global Object
+
+function test() {
+    console.log(this)
+}
+test(); 
+// logs global Object
+
+var obj = {
+    test: function() {
+        console.log(this)
+    }
+}
+
+obj.test();
+// logs obj
+
+Call() accepts the arguments as a list (spread by commas) and Apply() accepts an array of arguments.
+
+Those methods allow for defining a new value to “this” for the function /method to be exposed. By those functions, we can write a method once and use it with providing different objects without rewriting the method.
+By those functions, we can write a method once and use it with providing different objects without rewriting the method.
+
+var myMethod = function () {
+    console.log(this.location)
+}
+var place1 = {location: 'Istanbul'}
+var place2 = {location: 'Izmir'}
+myMethod()
+// logs window.location
+myMethod.call()
+// logs window.location since no this value is bound
+myMethod.call(place1)
+// logs Istanbul
+myMethod.apply(place2)
+// logs Izmir
+
+
+As for Function.prototype.bind, it creates a new function whose “this” is bound to the provided object together with the list of provided arguments. 
+Once you use the “bind” with bound properties, you have a new function to call from that moment.
+const myMethod = function (param = "district") {
+    console.log(`${this.location} ${param}`)
+}
+let place1 = {
+    location: 'Istanbul'
+}
+let place2 = {
+    location: 'Izmir'
+}
+
+// create a new function
+let yourMethod = myMethod.bind(place1)
+
+yourMethod()              // Istanbul district
+yourMethod('Bayrampasa')  // Istanbul Bayrampasa
+
+let theirMethod = myMethod.bind(place2,'Gaziemir')
+theirMethod()             // Izmir Gaziemir
+theirMethod('Buca')       // Izmir Gaziemir
+theirMethod.call(place1)  // Izmir Gaziemir
+// ! note that once the corresponding values are bound,
+// Remaining arguments are ignored.
+
