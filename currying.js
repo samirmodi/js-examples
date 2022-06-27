@@ -1,4 +1,14 @@
-//Prototype is an object attached to every object, functions
+//Real example
+
+function updateElementText(id, abc) {
+  return function (content) {
+    document.querySelector("#" + id).textContent = content;
+  };
+}
+
+const updateHeaderText = updateElementText("heading");
+updateHeaderText("Lol is the main heading");
+
 function evaluate(operation) {
   return function (num1) {
     return function (num2) {
