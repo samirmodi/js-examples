@@ -1,22 +1,25 @@
-const myMethod = function (param = "district") {
-  console.log(`${this.location} ${param}`);
-};
-let place1 = {
-  location: "Istanbul",
-};
-let place2 = {
-  location: "Izmir",
+const myName = function (city, state) {
+  console.log(`${this.firstName} ${this.lastName} ${city} ${state} `);
 };
 
-// create a new function
-let yourMethod = myMethod.bind(place1);
+const person = {
+  firstName: "Samir",
+  lastName: "Modi",
+};
 
-yourMethod(); // Istanbul district
-yourMethod("Bayrampasa"); // Istanbul Bayrampasa
+const test = myName.bind(person, "Pune");
 
-let theirMethod = myMethod.bind(place2, "Gaziemir");
-theirMethod(); // Izmir Gaziemir
-theirMethod("Buca"); // Izmir Gaziemir
-theirMethod.call(place1); // Izmir Gaziemir
-// ! note that once the corresponding values are bound,
-// Remaining arguments are ignored.
+test("Maharasthra");
+//bind returns a new function, it should invoke the calling function and pass the obj
+
+Function.prototype.polyBind = function (...args) {
+  console.log(args);
+  const obj = this;
+  const params = args.slice(1);
+  return function (...args2) {
+    obj.apply(args[0], [...params, ...args2]);
+  };
+};
+
+const test1 = myName.polyBind(person, "Pune");
+test1("Maharashtra");
